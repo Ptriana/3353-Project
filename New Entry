@@ -1,0 +1,40 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class New extends Application
+{
+   @Override
+   public void start(Stage stage)
+   {  
+       Pane root = new Pane();
+       Label label1 = new Label("Date");
+       label1.relocate(110, 70);
+       Label label2 = new Label("Time");
+       label2.relocate(300, 70);
+       Label label3 = new Label("Subject");
+       label3.relocate(110, 120);
+       Label label4 = new Label("Title");
+       label4.relocate(265, 165);
+       
+       TextField textField1 = new TextField();
+       textField1.relocate(110, 90);
+       TextField textField2 = new TextField();
+       textField2.relocate(300, 90);
+       TextField textField3 = new TextField();
+       textField3.relocate(110, 138);
+       TextField textField4 = new TextField();
+       textField4.relocate(205, 185);
+
+              
+       root.getChildren().addAll(label1, label2, label3, label4, textField1, textField2, textField3, textField4);
+              
+       Scene scene = new Scene(root, 600, 400);
+       stage.setTitle("Assignment 6");
+       stage.setScene(scene);
+       stage.show();
+   }
+}
