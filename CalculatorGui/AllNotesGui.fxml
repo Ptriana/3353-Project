@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="445.0" prefWidth="463.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CalculatorGui.mainapplicationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CalculatorGui.mainapplicationController">
    <children>
-      <TableView layoutY="14.0" prefHeight="386.0" prefWidth="461.0">
+      <TableView fx:id="tableView" layoutY="32.0" prefHeight="386.0" prefWidth="461.0">
         <columns>
           <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
           <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time" />
@@ -15,6 +15,6 @@
             <TableColumn fx:id="noteContentsColumn" prefWidth="235.199951171875" text="NoteContents" />
         </columns>
       </TableView>
-      <Button fx:id="backButton" layoutX="211.0" layoutY="405.0" mnemonicParsing="false" onAction="#switchToScene3WithoutPassword" text="Back" />
+      <Button fx:id="backButton" layoutX="212.0" layoutY="427.0" mnemonicParsing="false" onAction="#switchToScene3WithoutPassword" text="Back" />
    </children>
 </AnchorPane>
