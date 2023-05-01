@@ -1,5 +1,5 @@
 package CalculatorGui;
-/*public class Note {
+public class Note {
     public String date;
     public String time;
     public String subject;
@@ -52,9 +52,9 @@ package CalculatorGui;
                 ", subject='" + subject + '\'' +
                 ", noteContents='" + noteContents + '\'' +
                 '}';
-    }*/
-
-
+    }
+}
+/*
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -119,3 +119,4 @@ public class Note {
         return noteContents;
     }
 }
+*/

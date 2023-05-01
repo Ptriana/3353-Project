@@ -1,7 +1,12 @@
 package CalculatorGui;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class DatabaseModel
 {
@@ -18,5 +23,27 @@ public class DatabaseModel
    public void setNotes(ObservableList<Note> notes)
    {
    this.notes = notes;
+   }
+   
+   
+   
+   public void update(){
+   
+    ObservableList<Note> notes = FXCollections.observableArrayList();
+    try {
+    String url = "jdbc:sqlite:java.db";  
+    Connection conn = DriverManager.getConnection(url);
+    String query = "SELECT * FROM notesTable";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ResultSet rs = ps.executeQuery();
+    while (rs.next()) {
+        Note nt = new Note(rs.getString("Date"), rs.getString("Time"), rs.getString("Subject"), rs.getString("NoteContents"));
+        notes.add(nt);
+    }}
+    catch (SQLException ex) {
+    ex.printStackTrace();
+}
+
+
    }
 }

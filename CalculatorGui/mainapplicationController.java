@@ -32,6 +32,16 @@ import javafx.scene.control.ListView;
 import CalculatorGui.Note;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import javafx.scene.layout.StackPane;
 
 public class mainapplicationController 
 {
@@ -83,10 +93,11 @@ public class mainapplicationController
   
        @FXML
     private ListView<String> listView;
-    /*@FXML
-    private Button toSceneThree;*/
-    
-    
+   
+      @FXML
+    private TextArea dataArea;
+
+ 
    
   @FXML
     void switchToScene1(ActionEvent event) throws IOException {
@@ -107,6 +118,7 @@ public class mainapplicationController
     scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
+    
     }
     
     @FXML
@@ -116,7 +128,7 @@ public class mainapplicationController
     scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
-
+     
     }
     
     
@@ -140,78 +152,90 @@ public class mainapplicationController
     }
 }
 
-/*When I try the section below, I get a null pointer error when starting the application
-If I switch the method to switchToSceneFour I get a null pointer when I click the appropiate button*/
 
-
-
-/*private static Connection con;
-    private static Statement stat;
-    private PreparedStatement prep;
-    private ObservableList <Note> dataNotes; 
-    ResultSet resultSet = null;   
-   //@Override
-     private final ObservableList<Note> notes = FXCollections.observableArrayList();
-
-  /*  public void initialize() throws SQLException {
-     dataNotes = FXCollections.observableArrayList();
-    try {
-    String url = "jdbc:sqlite:java.db";  
-    Connection conn = DriverManager.getConnection(url);
-    String query = "SELECT * FROM notesTable";
-    PreparedStatement ps = conn.prepareStatement(query);
-    ResultSet rs = ps.executeQuery();
-    while (rs.next()) {
-        Note nt = new Note(rs.getString("Date"), rs.getString("Time"), rs.getString("Subject"), rs.getString("NoteContents"));
-        dataNotes.add(nt);
-    }
-    dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
-    timeColumn.setCellValueFactory(cellData -> cellData.getValue().timeProperty());
-    subjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-    noteContentsColumn.setCellValueFactory(cellData -> cellData.getValue().noteContentsProperty());
-    tableView.setItems(dataNotes);
-} catch (SQLException ex) {
-    ex.printStackTrace();
-}
-}*/
-  /*public ObservableList<Note> getNotes() {
-    return dataNotes;*/
-
-
-
-
-/*This prints to the console but when we try something like the code above we get null pointers
-we can't seem to get it to display any way in javafx*/
 @FXML
 void switchToScene4(ActionEvent event) throws IOException {
-    Parent root = FXMLLoader.load(getClass().getResource("Console.fxml"));
-    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    scene = new Scene(root);
-    stage.setScene(scene);
-    stage.show();
-    String url = "jdbc:sqlite:java.db";  
-        Connection conn = null; 
-        String sql = "Select * from NotesTable"; 
-        try {  
-            conn = DriverManager.getConnection(url);  
-            
-            Statement stmt  = conn.createStatement();  
-            ResultSet rs    = stmt.executeQuery(sql);
-              while (rs.next()) {  
-                System.out.println(rs.getString("date") +  "\t" +   
-                                   rs.getString("time") + "\t" +  
-                                   rs.getString("subject") + "\t"+
-                                   rs.getString("noteContents"));  
-            }    
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
-    /*dateColumn.setCellValueFactory(new PropertyValueFactory<Note, String>("date"));
-    timeColumn.setCellValueFactory(new PropertyValueFactory<Note, String>("time"));
-    subjectColumn.setCellValueFactory(new PropertyValueFactory<Note, String>("subject"));
-    noteContentsColumn.setCellValueFactory(new PropertyValueFactory<Note, String>("noteContents"));
-    tableView.setItems(model.getNotes());*/
-}
+   
+                 
+        // create a JavaFX TableView to display the data
+        TableView<Note> tableView = new TableView<>();
+
+        // create columns for the table view
+        //idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumn<Note, String> dateCol = new TableColumn<>("Date");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        TableColumn<Note, String> timeCol = new TableColumn<>("Time");
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        TableColumn<Note, String> subjectCol = new TableColumn<>("Subject");
+        subjectCol.setCellValueFactory(new PropertyValueFactory<>("subject"));
+
+        TableColumn<Note, String> noteContentsCol = new TableColumn<>("Note Contents");
+        noteContentsCol.setCellValueFactory(new PropertyValueFactory<>("noteContents"));
+
+        // add the columns to the table view
+        tableView.getColumns().add(dateCol);
+        tableView.getColumns().add(timeCol);
+        tableView.getColumns().add(subjectCol);
+        tableView.getColumns().add(noteContentsCol);
+         
+
+        // populate the table view with data from the database
+        ObservableList<Note> data = FXCollections.observableArrayList();
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:java.db")) 
+        {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM NotesTable");
+StringBuilder sb = new StringBuilder();
+            while (rs.next()) 
+            {
+                String date = rs.getString("date");
+                String time = rs.getString("time");
+                String subject = rs.getString("subject");
+                String noteContents = rs.getString("noteContents");
+sb.append(rs.getString("date"))
+              .append("\t")
+              .append(rs.getString("time"))
+              .append("\t")
+              .append(rs.getString("subject"))
+              .append("\t")
+              .append(rs.getString("noteContents"))
+              .append("\n");
+
+                data.add(new Note(date, time, subject, noteContents));
+            }
+             System.out.println(sb.toString());
+
+
+        } catch (SQLException e) 
+        {
+            System.out.printf("SQL ERROR: %s%n", e.getMessage());
+        }
+
+        tableView.setItems(data);
+
+        // create a layout and add the table view to it
+        StackPane rootPane = new StackPane();
+        rootPane.getChildren().add(tableView);
+
+        // create a scene and add the layout to it
+        Scene tableViewScene = new Scene(rootPane, 600, 400);
+
+        // create a new stage for the table view scene
+        Stage tableViewStage = new Stage();
+        tableViewStage.setTitle("All Notes");
+        tableViewStage.setScene(tableViewScene);
+        tableViewStage.show();
+                }
+        
+    
+    
+    
+
+
+   
+
       
    @FXML
     void saveToDatabase(ActionEvent event) {
