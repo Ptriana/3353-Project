@@ -15,7 +15,7 @@
  * MainApplication.java
  * mainapplicationController.java
  * Note.java
- * NoteGUIFXML.jfxml
+ * NoteGUIFXML.fxml
  * TextArea.fxml
  
  ### How to navigate the Secret Calculator. ###
