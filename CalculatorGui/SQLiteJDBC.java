@@ -1,10 +1,13 @@
 import java.sql.*;
 
-public class SQLiteJDBC {
-  public static void main( String args[] ) {
+public class SQLiteJDBC 
+{
+  public static void main( String args[] ) 
+  {
       Connection c = null;
       
-      try {
+      try 
+      {
          Class.forName("org.sqlite.JDBC");
          c = DriverManager.getConnection("jdbc:sqlite:java.db");
       } catch ( Exception e ) {
