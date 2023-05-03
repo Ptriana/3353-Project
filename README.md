@@ -9,7 +9,6 @@
  
 ### What files do I need to download? ###
  * CalculatorGUIFXML.fxml
- * DatabaseExamplee.java
  * DatabaseModel.java
  * JounralEntry.java
  * LoginGUIFXML.fxml
