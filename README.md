@@ -23,7 +23,7 @@
  * 1. After having downloaded all the needed files open the file called MainApplication.java
  * 2. Click on the Run button (Red Running Man)
  * 3. After the Calculator GUI pops up, click on the "?" button at the bottom left to go to the next interface
- * 4. Upon the login interface poping up, Enter 'Admin' for the username and 'Password1' for the password field and click Login
+ * 4. Upon the login interface opening up, Enter 'Admin' for the username and 'Password1' for the password field and click Login
  * 5. After logging in successfully, you can now create a new journal entry that includes Date, Time, Subject and the Jounral Entry.
  * 6. After entering information into each of the 4 text areas, click on the 'Save' Button to save the journal entry.
  * 7. To view all journal entries click on the 'All Notes' button.
