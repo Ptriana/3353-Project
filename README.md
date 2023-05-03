@@ -9,14 +9,15 @@
  
 ### What files do I need to download? ###
  * CalculatorGUIFXML.fxml
+ * LoginGUIFXML.fxml
+ * NoteGUIFXML.fxml
+  * TextArea.fxml
+ * AllNotesGui.fxml
  * DatabaseModel.java
  * JounralEntry.java
- * LoginGUIFXML.fxml
  * MainApplication.java
  * mainapplicationController.java
  * Note.java
- * NoteGUIFXML.fxml
- * TextArea.fxml
  * sqlite-jdbc-3.41.2.1.jar
  
  ### How to navigate the Secret Calculator. ###
