@@ -17,6 +17,7 @@
  * Note.java
  * NoteGUIFXML.fxml
  * TextArea.fxml
+ * sqlite-jdbc-3.41.2.1.jar
  
  ### How to navigate the Secret Calculator. ###
  * 1. Open your preferred IED, we will be using jGRASP in our example. 
