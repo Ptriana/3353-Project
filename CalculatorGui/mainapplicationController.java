@@ -44,9 +44,7 @@ import java.io.InputStreamReader;
 import javafx.scene.layout.StackPane;
 
 public class mainapplicationController 
-{
-    
-      
+{    
    private Stage stage;
    private Scene scene;
    private Parent root;
@@ -88,37 +86,33 @@ public class mainapplicationController
 
     @FXML
     private TableColumn<Note, String> timeColumn;
-      @FXML
+   
+    @FXML
     private TableView<Note> tableView;
   
-       @FXML
+    @FXML
     private ListView<String> listView;
    
-      @FXML
+    @FXML
     private TextArea dataArea;
-
- 
    
-  @FXML
+    @FXML
     void switchToScene1(ActionEvent event) throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("CalculatorGUIFXML.fxml"));
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     scene = new Scene(root);
     stage.setScene(scene);
-    stage.show();
-   
-   
+    stage.show();  
    }
    
    
-   @FXML
+    @FXML
     void switchToScene2(ActionEvent event) throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("LoginGUIFXML.fxml"));
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
-    
     }
     
     @FXML
@@ -128,8 +122,7 @@ public class mainapplicationController
     scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
-     
-    }
+     }
     
     
     
@@ -152,16 +145,11 @@ public class mainapplicationController
     }
 }
 
-
-@FXML
-void switchToScene4(ActionEvent event) throws IOException {
+        @FXML
+        void switchToScene4(ActionEvent event) throws IOException {
    
-                 
-        // create a JavaFX TableView to display the data
         TableView<Note> tableView = new TableView<>();
 
-        // create columns for the table view
-        //idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<Note, String> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 
@@ -174,34 +162,31 @@ void switchToScene4(ActionEvent event) throws IOException {
         TableColumn<Note, String> noteContentsCol = new TableColumn<>("Note Contents");
         noteContentsCol.setCellValueFactory(new PropertyValueFactory<>("noteContents"));
 
-        // add the columns to the table view
         tableView.getColumns().add(dateCol);
         tableView.getColumns().add(timeCol);
         tableView.getColumns().add(subjectCol);
         tableView.getColumns().add(noteContentsCol);
          
-
-        // populate the table view with data from the database
         ObservableList<Note> data = FXCollections.observableArrayList();
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:java.db")) 
         {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM NotesTable");
-StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             while (rs.next()) 
             {
                 String date = rs.getString("date");
                 String time = rs.getString("time");
                 String subject = rs.getString("subject");
                 String noteContents = rs.getString("noteContents");
-sb.append(rs.getString("date"))
-              .append("\t")
-              .append(rs.getString("time"))
-              .append("\t")
-              .append(rs.getString("subject"))
-              .append("\t")
-              .append(rs.getString("noteContents"))
-              .append("\n");
+                sb.append(rs.getString("date"))
+               .append("\t")
+               .append(rs.getString("time"))
+               .append("\t")
+               .append(rs.getString("subject"))
+               .append("\t")
+               .append(rs.getString("noteContents"))
+               .append("\n");
 
                 data.add(new Note(date, time, subject, noteContents));
             }
@@ -215,57 +200,42 @@ sb.append(rs.getString("date"))
 
         tableView.setItems(data);
 
-        // create a layout and add the table view to it
         StackPane rootPane = new StackPane();
         rootPane.getChildren().add(tableView);
 
-        // create a scene and add the layout to it
         Scene tableViewScene = new Scene(rootPane, 600, 400);
 
-        // create a new stage for the table view scene
         Stage tableViewStage = new Stage();
         tableViewStage.setTitle("All Notes");
         tableViewStage.setScene(tableViewScene);
         tableViewStage.show();
-                }
-        
-    
-    
-    
+       }
 
+       @FXML
+       void saveToDatabase(ActionEvent event) {
+       try{ String url = "jdbc:sqlite:java.db";  
+       Connection conn = DriverManager.getConnection(url);      
+       conn = DriverManager.getConnection(url);
+       String sql1 = "CREATE TABLE IF NOT EXISTS NotesTable (\n" 
+       + " Date text,\n"
+       + " Time text,\n"
+       + " Subject text,\n"
+       + " NoteContents text\n"
+       + ");";
+    
+       Statement stmt = conn.createStatement();  
+       stmt.execute(sql1);  
 
-   
-
-      
-   @FXML
-    void saveToDatabase(ActionEvent event) {
-   try{ String url = "jdbc:sqlite:java.db";  
-        Connection conn = DriverManager.getConnection(url);      
-            conn = DriverManager.getConnection(url);
-    String sql1 = "CREATE TABLE IF NOT EXISTS NotesTable (\n" 
-    + " Date text,\n"
-    + " Time text,\n"
-    + " Subject text,\n"
-    + " NoteContents text\n"
-    + ");";
+       String sql = "INSERT INTO NotesTable(Date, Time, Subject, NoteContents) VALUES(?,?,?,?)";  
+       LocalDate date = dateField.getValue();
+       DateTimeFormatter fDate = DateTimeFormatter.ofPattern("dd/LLLL/yyyy");
+       String formatDate = fDate.format(date);
     
-             
-            Statement stmt = conn.createStatement();  
-            stmt.execute(sql1);  
-        
-    
-    
-    String sql = "INSERT INTO NotesTable(Date, Time, Subject, NoteContents) VALUES(?,?,?,?)";  
-    LocalDate date = dateField.getValue();
-    DateTimeFormatter fDate = DateTimeFormatter.ofPattern("dd/LLLL/yyyy");
-    String formatDate = fDate.format(date);
-    
-    String time = timeField.getText();
-    String subject = subjectText.getText();
+       String time = timeField.getText();
+       String subject = subjectText.getText();
  
-    String noteContents = textArea.getText();
+       String noteContents = textArea.getText();
     
-         
             PreparedStatement pstmt = conn.prepareStatement(sql);  
             pstmt.setString(1, formatDate);  
             pstmt.setString(2, time);
@@ -275,10 +245,8 @@ sb.append(rs.getString("date"))
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
-    }  
-        
-        
-    }  
+    }      
+}  
 
 
 
